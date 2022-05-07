@@ -1,1 +1,14 @@
 #TODO Add pygame installation and other dependencies
+name: paratrooper
+
+channels:
+  -defaults
+  -CogSci
+
+dependencies:
+  - python
+  - pygame
+  - matplotlib
+  - pip:
+      - pygame_gui
+      - pygame-matplotlib
