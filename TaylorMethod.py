@@ -16,7 +16,8 @@ class TaylorMethod:
     Y_FINAL = 0
     H = 0.001
     N = 1000
-
+    # Constructor of the TaylorMethod class, the position and velocity have initial conditions
+    # so we set them appropriately
     def __init__(self, m: float, b: float, y0: float):
         self.m = m
         self.b = b
@@ -26,7 +27,7 @@ class TaylorMethod:
         self.y_position = []
         self.y_first_derivative.append(0)
         self.y_position.append(self.y0)
-
+    # This method calculates the position, velocity and acceleration using Taylor series expansion
     def numerical_method(self):
         i = 0
         while self.y_position[i] >= 0:
@@ -47,7 +48,7 @@ class TaylorMethod:
 
         self.y_position.append(0)
         self.y_second_derivative.append(self.y_second_derivative[i-1])
-
+        # For testing purposes we display the values of our lists in 3 columns
         for j in range(len(self.y_position)):
             print(j, "    ", self.y_position[j], "    ", self.y_first_derivative[j], "    ",
                   self.y_second_derivative[j])
