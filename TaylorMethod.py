@@ -37,7 +37,7 @@ class TaylorMethod:
 
             self.y_first_derivative.append(self.y_first_derivative[i] + TaylorMethod.H * self.y_second_derivative[i])
 
-            x = self.y_position[i] + TaylorMethod.H * self.y_first_derivative[i]
+            x = self.y_position[i] + TaylorMethod.H * self.y_first_derivative[i] \
             + TaylorMethod.H * TaylorMethod.H * 0.5 * self.y_second_derivative[i]
             if x <= 0:
                 i += 1
