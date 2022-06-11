@@ -1,6 +1,6 @@
 import math
 import pygame
-
+import matplotlib.pyplot as plt
 """
 TODO this class will implement the differential equation used to determine the trajectory of the paratrooper
 and it's derivatives
@@ -14,7 +14,7 @@ Initial Conditions y(0) = y0, v(0) = y'(0) = 0
 class TaylorMethod:
     G = 9.81
     Y_FINAL = 0
-    H = 0.001
+    H = 0.01
     N = 1000
     # Constructor of the TaylorMethod class, the position and velocity have initial conditions
     # so we set them appropriately
@@ -49,6 +49,6 @@ class TaylorMethod:
         self.y_position.append(0)
         self.y_second_derivative.append(self.y_second_derivative[i-1])
         # For testing purposes we display the values of our lists in 3 columns
-        for j in range(len(self.y_position)):
-            print(j, "    ", self.y_position[j], "    ", self.y_first_derivative[j], "    ",
-                  self.y_second_derivative[j])
+        # for j in range(len(self.y_position)):
+        #     print(j, "    ", self.y_position[j], "    ", self.y_first_derivative[j], "    ",
+        #           self.y_second_derivative[j])
