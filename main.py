@@ -8,6 +8,7 @@ from matplotlib.backends.backend_tkagg import (
     NavigationToolbar2Tk
 )
 
+
 class Paratrooper:
     def __init__(self, mass: float, B: float, y0: float):
         self.mass = mass
@@ -15,7 +16,6 @@ class Paratrooper:
         self.y0 = y0
 
     def display(self):
-
         method = TaylorMethod(self.mass, self.B, self.y0)
         method.numerical_method()
         length = list(range(len(method.y_position)))
@@ -35,37 +35,24 @@ class Paratrooper:
 
         # position plot
 
-        figure1 = plt.Figure(figsize=(5, 4), dpi=100)
-        ax1 = figure1.add_subplot(111)
-        line1 = FigureCanvasTkAgg(figure1, root)
-        line1.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
         df1 = df1[['Time', 'Distance']].groupby('Time').sum()
         df1.plot(kind='line', legend=True, ax=ax1, color='r', fontsize=10)
-        ax1.set_title('Distance vs Time')
 
         # velocity plot
 
-        figure2 = plt.Figure(figsize=(5, 4), dpi=100)
-        ax2 = figure2.add_subplot(111)
-        line2 = FigureCanvasTkAgg(figure2, root)
-        line2.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
         df2 = df2[['Time', 'Velocity']].groupby('Time').sum()
         df2.plot(kind='line', legend=True, ax=ax2, color='r', fontsize=10)
-        ax2.set_title('Velocity vs Time')
 
         # acceleration plot
 
-        figure3 = plt.Figure(figsize=(5, 4), dpi=100)
-        ax3 = figure3.add_subplot(111)
-        line3 = FigureCanvasTkAgg(figure3, root)
-        line3.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
         df3 = df3[['Time', 'Acceleration']].groupby('Time').sum()
         df3.plot(kind='line', legend=True, ax=ax3, color='r', fontsize=10)
-        ax3.set_title('Acceleration vs Time')
+
 
 if __name__ == "__main__":
     matplotlib.use('TkAgg')
     root = tk.Tk()
+
     # text fields
     T1 = tk.Entry(root, width=30)
     T1.pack()
@@ -79,12 +66,33 @@ if __name__ == "__main__":
     T3.pack()
     T3.insert(tk.END, "1000")
 
+    figure1 = plt.Figure(figsize=(8, 9), dpi=100)
+
+    line1 = FigureCanvasTkAgg(figure1, root)
+    line1.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+
+    ax1 = figure1.add_subplot(221)
+    ax2 = figure1.add_subplot(222)
+    ax3 = figure1.add_subplot(223)
+
+    ax1.set_title('Distance vs Time')
+    ax2.set_title('Velocity vs Time')
+    ax3.set_title('Acceleration vs Time')
+
+
     def onSimulate():
         paratrooper = Paratrooper(float(T1.get()), float(T2.get()), float(T3.get()))
         paratrooper.display()
+        line1.draw_idle()
+
+    def onReset():
+        figure1.clf()
+        line1.draw_idle()
 
     # call of function
-    simulate = tk.Button(root, text = "Simulate", command = onSimulate)
+    simulate = tk.Button(root, text="Simulate", command=onSimulate)
+    reset = tk.Button(root, text="Reset", command=onReset)
     simulate.pack()
+    reset.pack()
 
     root.mainloop()
