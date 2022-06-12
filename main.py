@@ -140,6 +140,6 @@ if __name__ == "__main__":
     save = tk.Button(root, text="Save to CSV", command=onSave)
     simulate.grid(column=0, row=3, sticky=tk.N)
     reset.grid(column=1, row=3, sticky=tk.N)
-    save.grid(column=3, row=3)
+    save.grid(column=2, row=7)
 
     root.mainloop()
