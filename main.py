@@ -17,6 +17,7 @@ class Paratrooper:
         self.ax1 = ax1
         self.ax2 = ax2
         self.ax3 = ax3
+        self.data = DataFrame
 
     def display(self):
         method = TaylorMethod(self.mass, self.B, self.y0)
@@ -25,16 +26,16 @@ class Paratrooper:
 
         # data set from TaylorMethod
 
-        data = {'Time': length,
-                'Distance': method.y_position,
-                'Velocity': method.y_first_derivative,
-                'Acceleration': method.y_second_derivative
-                }
+        self.data = {'Time': length,
+                     'Distance': method.y_position,
+                     'Velocity': method.y_first_derivative,
+                     'Acceleration': method.y_second_derivative
+                     }
 
         # dataframes
-        df1 = DataFrame(data, columns=['Time', 'Distance'])
-        df2 = DataFrame(data, columns=['Time', 'Velocity'])
-        df3 = DataFrame(data, columns=['Time', 'Acceleration'])
+        df1 = DataFrame(self.data, columns=['Time', 'Distance'])
+        df2 = DataFrame(self.data, columns=['Time', 'Velocity'])
+        df3 = DataFrame(self.data, columns=['Time', 'Acceleration'])
 
         # position plot
 
@@ -50,6 +51,10 @@ class Paratrooper:
 
         df3 = df3[['Time', 'Acceleration']].groupby('Time').sum()
         df3.plot(kind='line', legend=True, ax=self.ax3, color='r', fontsize=10)
+
+    def saveToCsv(self):
+        df_save = DataFrame(self.data, columns=['Time', 'Velocity', 'Acceleration'])
+        df_save.to_csv('output.csv')
 
 
 if __name__ == "__main__":
@@ -99,6 +104,8 @@ if __name__ == "__main__":
     ax2.set_title('Velocity vs Time')
     ax3.set_title('Acceleration vs Time')
 
+    paratrooper = Paratrooper(float(T1.get()), float(T2.get()), float(T3.get()), ax1, ax2, ax3)
+
     def onSimulate():
         figure1.clf()
 
@@ -110,7 +117,13 @@ if __name__ == "__main__":
         ax2.set_title('Velocity vs Time')
         ax3.set_title('Acceleration vs Time')
 
-        paratrooper = Paratrooper(float(T1.get()), float(T2.get()), float(T3.get()), ax1, ax2, ax3)
+        paratrooper.mass = float(T1.get())
+        paratrooper.B = float(T2.get())
+        paratrooper.y0 = float(T3.get())
+        paratrooper.ax1 = ax1
+        paratrooper.ax2 = ax2
+        paratrooper.ax3 = ax3
+
         paratrooper.display()
         line1.draw_idle()
 
@@ -118,10 +131,15 @@ if __name__ == "__main__":
         figure1.clf()
         line1.draw_idle()
 
+    def onSave():
+        paratrooper.saveToCsv()
+
     # call of function
     simulate = tk.Button(root, text="Simulate", command=onSimulate)
     reset = tk.Button(root, text="Reset", command=onReset)
+    save = tk.Button(root, text="Save to CSV", command=onSave)
     simulate.grid(column=0, row=3, sticky=tk.N)
     reset.grid(column=1, row=3, sticky=tk.N)
+    save.grid(column=3, row=3)
 
     root.mainloop()
