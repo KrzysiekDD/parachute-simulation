@@ -52,33 +52,44 @@ class Paratrooper:
 if __name__ == "__main__":
     matplotlib.use('TkAgg')
     root = tk.Tk()
+    root.columnconfigure(0, weight=1)
+    root.columnconfigure(1, weight=3)
+    root.rowconfigure(0, weight=1)
+    root.rowconfigure(1, weight=1)
+    root.rowconfigure(2, weight=1)
+    root.rowconfigure(3, weight=1)
 
     # text fields
+    L1 = tk.Label(root, text="Set object mass: ")
     T1 = tk.Entry(root, width=30)
-    T1.pack()
+    L1.grid(column=0, row=0, sticky=tk.N)
+    T1.grid(column=1, row=0, sticky=tk.N)
     T1.insert(tk.END, "10")
 
+    L2 = tk.Label(root, text="Set B value: ")
     T2 = tk.Entry(root, width=30)
-    T2.pack()
+    L2.grid(column=0, row=1, sticky=tk.N)
+    T2.grid(column=1, row=1, sticky=tk.N)
     T2.insert(tk.END, "0.1")
 
+    L3 = tk.Label(root, text="Set starting height: ")
     T3 = tk.Entry(root, width=30)
-    T3.pack()
+    L3.grid(column=0, row=2, sticky=tk.N)
+    T3.grid(column=1, row=2, sticky=tk.N)
     T3.insert(tk.END, "1000")
 
-    figure1 = plt.Figure(figsize=(8, 9), dpi=100)
+    figure1 = plt.Figure(figsize=(10, 4), dpi=100)
 
     line1 = FigureCanvasTkAgg(figure1, root)
-    line1.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+    line1.get_tk_widget().grid(column=2, row=0, rowspan=5, padx=20, pady=20)
 
-    ax1 = figure1.add_subplot(221)
-    ax2 = figure1.add_subplot(222)
-    ax3 = figure1.add_subplot(223)
+    ax1 = figure1.add_subplot(131)
+    ax2 = figure1.add_subplot(132)
+    ax3 = figure1.add_subplot(133)
 
     ax1.set_title('Distance vs Time')
     ax2.set_title('Velocity vs Time')
     ax3.set_title('Acceleration vs Time')
-
 
     def onSimulate():
         paratrooper = Paratrooper(float(T1.get()), float(T2.get()), float(T3.get()))
@@ -92,7 +103,7 @@ if __name__ == "__main__":
     # call of function
     simulate = tk.Button(root, text="Simulate", command=onSimulate)
     reset = tk.Button(root, text="Reset", command=onReset)
-    simulate.pack()
-    reset.pack()
+    simulate.grid(column=0, row=3, sticky=tk.N)
+    reset.grid(column=1, row=3, sticky=tk.N)
 
     root.mainloop()
