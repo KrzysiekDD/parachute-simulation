@@ -10,10 +10,13 @@ from matplotlib.backends.backend_tkagg import (
 
 
 class Paratrooper:
-    def __init__(self, mass: float, B: float, y0: float):
+    def __init__(self, mass: float, B: float, y0: float, ax1, ax2, ax3):
         self.mass = mass
         self.B = B
         self.y0 = y0
+        self.ax1 = ax1
+        self.ax2 = ax2
+        self.ax3 = ax3
 
     def display(self):
         method = TaylorMethod(self.mass, self.B, self.y0)
@@ -36,17 +39,17 @@ class Paratrooper:
         # position plot
 
         df1 = df1[['Time', 'Distance']].groupby('Time').sum()
-        df1.plot(kind='line', legend=True, ax=ax1, color='r', fontsize=10)
+        df1.plot(kind='line', legend=True, ax=self.ax1, color='r', fontsize=10)
 
         # velocity plot
 
         df2 = df2[['Time', 'Velocity']].groupby('Time').sum()
-        df2.plot(kind='line', legend=True, ax=ax2, color='r', fontsize=10)
+        df2.plot(kind='line', legend=True, ax=self.ax2, color='r', fontsize=10)
 
         # acceleration plot
 
         df3 = df3[['Time', 'Acceleration']].groupby('Time').sum()
-        df3.plot(kind='line', legend=True, ax=ax3, color='r', fontsize=10)
+        df3.plot(kind='line', legend=True, ax=self.ax3, color='r', fontsize=10)
 
 
 if __name__ == "__main__":
@@ -66,7 +69,7 @@ if __name__ == "__main__":
     T1.grid(column=1, row=0, sticky=tk.N)
     T1.insert(tk.END, "10")
 
-    L2 = tk.Label(root, text="Set B value: ")
+    L2 = tk.Label(root, text="Set B value (air resistance): ")
     T2 = tk.Entry(root, width=30)
     L2.grid(column=0, row=1, sticky=tk.N)
     T2.grid(column=1, row=1, sticky=tk.N)
@@ -78,10 +81,15 @@ if __name__ == "__main__":
     T3.grid(column=1, row=2, sticky=tk.N)
     T3.insert(tk.END, "1000")
 
-    figure1 = plt.Figure(figsize=(10, 4), dpi=100)
+    figure1 = plt.Figure(figsize=(13, 4), dpi=100)
 
     line1 = FigureCanvasTkAgg(figure1, root)
-    line1.get_tk_widget().grid(column=2, row=0, rowspan=5, padx=20, pady=20)
+
+    toolbar = NavigationToolbar2Tk(line1, root, pack_toolbar=False)
+    toolbar.update()
+    toolbar.grid(column=2, row=6)
+
+    line1.get_tk_widget().grid(column=2, row=0, rowspan=5, padx=4, pady=20)
 
     ax1 = figure1.add_subplot(131)
     ax2 = figure1.add_subplot(132)
@@ -92,7 +100,17 @@ if __name__ == "__main__":
     ax3.set_title('Acceleration vs Time')
 
     def onSimulate():
-        paratrooper = Paratrooper(float(T1.get()), float(T2.get()), float(T3.get()))
+        figure1.clf()
+
+        ax1 = figure1.add_subplot(131)
+        ax2 = figure1.add_subplot(132)
+        ax3 = figure1.add_subplot(133)
+
+        ax1.set_title('Distance vs Time')
+        ax2.set_title('Velocity vs Time')
+        ax3.set_title('Acceleration vs Time')
+
+        paratrooper = Paratrooper(float(T1.get()), float(T2.get()), float(T3.get()), ax1, ax2, ax3)
         paratrooper.display()
         line1.draw_idle()
 
