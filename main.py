@@ -60,6 +60,8 @@ class Paratrooper:
 if __name__ == "__main__":
     matplotlib.use('TkAgg')
     root = tk.Tk()
+    root.geometry("1300x400")
+
     root.columnconfigure(0, weight=1)
     root.columnconfigure(1, weight=3)
     root.rowconfigure(0, weight=1)
@@ -86,7 +88,7 @@ if __name__ == "__main__":
     T3.grid(column=1, row=2, sticky=tk.N)
     T3.insert(tk.END, "1000")
 
-    figure1 = plt.Figure(figsize=(13, 4), dpi=100)
+    figure1 = plt.Figure(figsize=(10, 3), dpi=100)
 
     line1 = FigureCanvasTkAgg(figure1, root)
 
