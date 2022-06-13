@@ -1,5 +1,3 @@
-import math
-import pygame
 import matplotlib.pyplot as plt
 """
 TODO this class will implement the differential equation used to determine the trajectory of the paratrooper

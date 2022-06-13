@@ -2,13 +2,10 @@
 name: paratrooper
 
 channels:
-  -defaults
-  -CogSci
+  - conda-forge
 
 dependencies:
   - python
-  - pygame
   - matplotlib
-  - pip:
-      - pygame_gui
-      - pygame-matplotlib
+  - tk
+  - pandas
