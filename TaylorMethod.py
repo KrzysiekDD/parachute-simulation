@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 """
 TODO this class will implement the differential equation used to determine the trajectory of the paratrooper
 and it's derivatives
@@ -12,14 +11,13 @@ Initial Conditions y(0) = y0, v(0) = y'(0) = 0
 class TaylorMethod:
     G = 9.81
     Y_FINAL = 0
-    H = 0.01
-    N = 1000
     # Constructor of the TaylorMethod class, the position and velocity have initial conditions
     # so we set them appropriately
-    def __init__(self, m: float, b: float, y0: float):
+    def __init__(self, m: float, b: float, y0: float, H: float):
         self.m = m
         self.b = b
         self.y0 = y0
+        self.H = H
         self.y_second_derivative = []
         self.y_first_derivative = []
         self.y_position = []
@@ -33,10 +31,10 @@ class TaylorMethod:
             self.y_second_derivative.append(-TaylorMethod.G
             + (self.b / self.m) * self.y_first_derivative[i] * self.y_first_derivative[i])
 
-            self.y_first_derivative.append(self.y_first_derivative[i] + TaylorMethod.H * self.y_second_derivative[i])
+            self.y_first_derivative.append(self.y_first_derivative[i] + self.H * self.y_second_derivative[i])
 
-            x = self.y_position[i] + TaylorMethod.H * self.y_first_derivative[i] \
-            + TaylorMethod.H * TaylorMethod.H * 0.5 * self.y_second_derivative[i]
+            x = self.y_position[i] + self.H * self.y_first_derivative[i] \
+            + self.H * self.H * 0.5 * self.y_second_derivative[i]
             if x <= 0:
                 i += 1
                 break
