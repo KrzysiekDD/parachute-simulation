@@ -18,6 +18,8 @@ class Paratrooper:
         self.ax2 = ax2
         self.ax3 = ax3
         self.data = DataFrame
+        self.lastVelocity = 0.0
+        self.lastAcceleration = 0.0
 
     def display(self):
         method = TaylorMethod(self.mass, self.B, self.y0)
@@ -32,7 +34,11 @@ class Paratrooper:
                      'Acceleration': method.y_second_derivative
                      }
 
+        self.lastVelocity = method.y_first_derivative[-1]
+        self.lastAcceleration = method.y_second_derivative[-1]
+
         # dataframes
+
         df1 = DataFrame(self.data, columns=['Time', 'Distance'])
         df2 = DataFrame(self.data, columns=['Time', 'Velocity'])
         df3 = DataFrame(self.data, columns=['Time', 'Acceleration'])
@@ -70,6 +76,7 @@ if __name__ == "__main__":
     root.rowconfigure(3, weight=1)
 
     # text fields
+
     L1 = tk.Label(root, text="Set object mass: ")
     T1 = tk.Entry(root, width=30)
     L1.grid(column=0, row=0, sticky=tk.N)
@@ -88,13 +95,37 @@ if __name__ == "__main__":
     T3.grid(column=1, row=2, sticky=tk.N)
     T3.insert(tk.END, "1000")
 
+    L8 = tk.Label(root, text="Set simulation step: ")
+    T4 = tk.Entry(root, width=30)
+    L8.grid(column=0, row=3)
+    T4.grid(column=1, row=3)
+    T4.insert(tk.END, "0.01")
+
     figure1 = plt.Figure(figsize=(10, 3), dpi=100)
 
     line1 = FigureCanvasTkAgg(figure1, root)
 
+    # toolbar
+
     toolbar = NavigationToolbar2Tk(line1, root, pack_toolbar=False)
     toolbar.update()
     toolbar.grid(column=2, row=6)
+
+    # last velocity and acceleration
+
+    lastVel = tk.StringVar()
+    lastAccel = tk.StringVar()
+
+    L4 = tk.Label(root, textvariable=lastVel)
+    L5 = tk.Label(root, textvariable=lastAccel)
+    L6 = tk.Label(root, text="Final velocity [m/s]")
+    L7 = tk.Label(root, text="Final acceleration [m/s^2]")
+    L4.grid(column=0, row=6)
+    L5.grid(column=1, row=6)
+    L6.grid(column=0, row=5)
+    L7.grid(column=1, row=5)
+
+    # plots
 
     line1.get_tk_widget().grid(column=2, row=0, rowspan=5, padx=4, pady=20)
 
@@ -107,6 +138,7 @@ if __name__ == "__main__":
     ax3.set_title('Acceleration vs Time')
 
     paratrooper = Paratrooper(float(T1.get()), float(T2.get()), float(T3.get()), ax1, ax2, ax3)
+
 
     def onSimulate():
         figure1.clf()
@@ -127,21 +159,30 @@ if __name__ == "__main__":
         paratrooper.ax3 = ax3
 
         paratrooper.display()
+
+        lastVel.set(repr(paratrooper.lastVelocity))
+        lastAccel.set(repr(paratrooper.lastAcceleration))
+
         line1.draw_idle()
+
 
     def onReset():
         figure1.clf()
         line1.draw_idle()
 
+
     def onSave():
         paratrooper.saveToCsv()
 
-    # call of function
+
+    # buttons
+
     simulate = tk.Button(root, text="Simulate", command=onSimulate)
     reset = tk.Button(root, text="Reset", command=onReset)
     save = tk.Button(root, text="Save to CSV", command=onSave)
-    simulate.grid(column=0, row=3, sticky=tk.N)
-    reset.grid(column=1, row=3, sticky=tk.N)
+
+    simulate.grid(column=0, row=4, sticky=tk.N)
+    reset.grid(column=1, row=4, sticky=tk.N)
     save.grid(column=2, row=7)
 
     root.mainloop()
