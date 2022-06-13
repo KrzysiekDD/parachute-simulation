@@ -102,11 +102,11 @@ if __name__ == "__main__":
 
     L8 = tk.Label(root, text="Set simulation step: ")
     T4 = tk.Entry(root, width=30)
-    L8.grid(column=0, row=3)
-    T4.grid(column=1, row=3)
+    L8.grid(column=0, row=3, sticky=tk.N)
+    T4.grid(column=1, row=3, sticky=tk.N)
     T4.insert(tk.END, "0.01")
 
-    figure1 = plt.Figure(figsize=(10, 4), dpi=100)
+    figure1 = plt.Figure(figsize=(10, 5))
     figure1.tight_layout()
 
     line1 = FigureCanvasTkAgg(figure1, root)
@@ -125,7 +125,7 @@ if __name__ == "__main__":
     L4 = tk.Label(root, textvariable=lastVel)
     L5 = tk.Label(root, textvariable=lastAccel)
     L6 = tk.Label(root, text="Final velocity [m/s]")
-    L7 = tk.Label(root, text="Final acceleration [m/s^2]")
+    L7 = tk.Label(root, text="Final accel. [m/s^2]")
     L4.grid(column=0, row=6)
     L5.grid(column=1, row=6)
     L6.grid(column=0, row=5)
