@@ -21,6 +21,7 @@ class Paratrooper:
         self.data = DataFrame
         self.lastVelocity = 0.0
         self.lastAcceleration = 0.0
+        self.elapsedTime = 0.0
 
     def display(self):
         method = TaylorMethod(self.mass, self.B, self.y0, self.H)
@@ -35,6 +36,7 @@ class Paratrooper:
                      'Acceleration': method.y_second_derivative
                      }
 
+        self.elapsedTime = len(method.y_position)*self.H
         self.lastVelocity = method.y_first_derivative[-1]
         self.lastAcceleration = method.y_second_derivative[-1]
 
@@ -120,12 +122,12 @@ if __name__ == "__main__":
     # last velocity and acceleration
 
     lastVel = tk.StringVar()
-    lastAccel = tk.StringVar()
+    elapsedTime = tk.StringVar()
 
     L4 = tk.Label(root, textvariable=lastVel)
-    L5 = tk.Label(root, textvariable=lastAccel)
+    L5 = tk.Label(root, textvariable=elapsedTime)
     L6 = tk.Label(root, text="Final velocity [m/s]")
-    L7 = tk.Label(root, text="Final accel. [m/s^2]")
+    L7 = tk.Label(root, text="Elapsed time [s]")
     L4.grid(column=0, row=6)
     L5.grid(column=1, row=6)
     L6.grid(column=0, row=5)
@@ -170,7 +172,7 @@ if __name__ == "__main__":
         paratrooper.display()
 
         lastVel.set(repr(paratrooper.lastVelocity))
-        lastAccel.set(repr(paratrooper.lastAcceleration))
+        elapsedTime.set(repr(paratrooper.elapsedTime))
 
         figure1.tight_layout()
         line1.draw_idle()
