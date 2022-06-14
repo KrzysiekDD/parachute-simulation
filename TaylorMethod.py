@@ -1,6 +1,4 @@
 """
-TODO this class will implement the differential equation used to determine the trajectory of the paratrooper
-and it's derivatives
 Freefall with air resistance:
     m * (d^2y)/(dt^2) = -m*g + b * (dy/dt)^2
 Initial Conditions y(0) = y0, v(0) = y'(0) = 0
@@ -21,9 +19,9 @@ class TaylorMethod:
         self.y_second_derivative = []
         self.y_first_derivative = []
         self.y_position = []
-        self.y_first_derivative.append(0)
+        self.y_first_derivative.append(-2.0)
         self.y_position.append(self.y0)
-    # This method calculates the position, velocity and acceleration using Taylor series expansion
+    # This method calculates the position, velocity and acceleration using Taylor method for numerical ODE's
     def numerical_method(self):
         i = 0
         while self.y_position[i] >= 0:
@@ -44,7 +42,3 @@ class TaylorMethod:
 
         self.y_position.append(0)
         self.y_second_derivative.append(self.y_second_derivative[i-1])
-        # For testing purposes we display the values of our lists in 3 columns
-        # for j in range(len(self.y_position)):
-        #     print(j, "    ", self.y_position[j], "    ", self.y_first_derivative[j], "    ",
-        #           self.y_second_derivative[j])
